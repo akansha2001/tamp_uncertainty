@@ -1,0 +1,30 @@
+[project]
+name = "tamp-uncertainty"
+version = "0.1.0"
+authors = ["..."]
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.10.12"
+dependencies = [
+    "isaacsim-app>=4.2.0.2",
+    "isaacsim-extscache-kit>=4.2.0.2",
+    "isaacsim-extscache-kit-sdk>=4.2.0.2",
+    "isaacsim-extscache-physics>=4.2.0.2",
+    "isaacsim-replicator>=4.2.0.2",
+    "isaacsim-rl>=4.2.0.2",
+    "torch==2.4.0",
+    "isaacsim-example>=4.2.0.2",
+    "pip>=24.3.1",
+    "omni-isaac-lab",
+    "omni-isaac-lab-assets",
+    "omni-isaac-lab-tasks[all]",
+    "tampura",
+    "ipykernel>=6.29.5",
+    "pygraphviz>=1.14",
+]
+
+[tool.uv.sources]
+omni-isaac-lab = { path = "IsaacLab/source/extensions/omni.isaac.lab", editable = true }
+omni-isaac-lab-assets = { path = "IsaacLab/source/extensions/omni.isaac.lab_assets", editable = true }
+omni-isaac-lab-tasks = { path = "IsaacLab/source/extensions/omni.isaac.lab_tasks", editable = true }
+tampura = { path = "tampura", editable = true }
