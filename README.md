@@ -1,13 +1,19 @@
 # Uncertainty and Risk Aware Task and Motion Planning
 While Integrated Task and Motion Planning (TAMP) (Garrett et. al., [2020](https://arxiv.org/pdf/2010.01083)) offers a valuable approach to generalizable long-horizon robotic manipulation and navigation problems, the typical TAMP formulation assumes full observability and deterministic action effects. These assumptions limit the ability of the planner to gather inforamtion and make decisions that are risk-aware. Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) present TAMP with Uncertainty and Risk Awareness (TAMPURA) as an efficient way to solve long-horizon planning problems with initial-state and action outcome uncertainty. TAMPURA uses sequences of controllers for short-time manipulation tasks for long-horizon planning in a deterministic fashion. It extends TAMP with partial observability, uncertainty and a coarse knowledge of the controllers' preconditions and effects. The main algorithm is illustrated below.
-![TAMPURA](/media/TAMPURA_fig3.png)
+
+<p align="center">
+  <img width="600" height="300" src="media/TAMPURA_fig3.png">
+</p>
+
+
 Using “templates” that define preconditions and effects for each operator, the symbolic planner solves for multiple all-outcomes determinized plans to the goal abstract belief state. These plans are then evaluated using a mental simulation to approximately learn the transition and reward models for the MDP. The MDP is then solved to obtain a policy which takes belief states as inputs and outputs a suitable controller.
 
 ## Status
 Two TAMPURA scenarios from Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) have been implemented and simulated on [Isaac Lab](https://isaac-sim.github.io/IsaacLab/main/index.html). The simulations are shown below.
 ### Class Uncertainty
-A [robot arm](https://robodk.com/robot/Franka/Emika-Panda) is mounted to a table with 4 objects placed in front of it, with at least one bowl in the scene. The robot must place all objects of a certain class (here, green blocks) in the bowl. Classification noise is added to ground truth labels to mimic the confidence scores typically returned by object
-The agent can gain more certainty about an object category by inspecting the object more closely with a wrist mounted camera (the use of a camera is ommitted in this implementation and the agent gets the class from the environment). A reasonable
+A [robot arm](https://robodk.com/robot/Franka/Emika-Panda) is mounted to a table with 4 objects placed in front of it, with at least one bowl in the scene. The robot must place all objects of a certain class (here, green blocks) in the bowl. 
+Classification noise is added to ground truth labels to mimic the confidence scores typically returned by object detection systems.
+The agent can gain more certainty about an object category by inspecting the object more closely with a wrist mounted camera (the use of a camera is ommitted in this implementation and the agent queries the environment to gain certainty about the object class). A reasonable
 strategy is to closely inspect objects and stably grasp and place them in the bowl. The planner has access to the following controllers:
 Pick(?o ?g ?r), Drop(?o ?g ?r), Inspect(?o),
 for objects o, grasps g, and regions on the table r. 
@@ -15,13 +21,45 @@ This is done in a closed loop fashion, i.e., if the agent believes that the obje
 
 *(In this example, the stability of grasps is ommitted. It is implemented in the search object scenario.)*
 
-<video controls width="640">
-  <source src="https://akansha2001.github.io/tamp_uncertainty/media/class_uncertainty1.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+The demonstrations can be found on YouTube: [demo1](https://youtu.be/Pu4PjG98_KI) and [demo2](https://youtu.be/qWSa4KQeKMk).
 
 
 ### Searching for an object in a cluttered environment 
+In this task, the agent has 4 objects placed in front of it with exactly one die hidden
+somewhere in the scene such that it is not directly visible. The
+goal is to be holding the die without dropping any objects.
+The robot must look around the scene for the object, and may
+need to manipulate non-target objects under certain kinematic,
+geometric, or visibility constraints. The planner has access to
+Pick(?o, ?g), Place(?o, ?g), Look(?o, ?q) controllers for this task.
+Further, the object grasps have unknown probabilty of success, which may be determined 
+during the mental simulations for learning the MDP.
+
+The demonstrations can be found on YouTube: [demo1](https://youtu.be/9mQTKUqqYbY) and [demo2](https://youtu.be/B_AgarWq8mk).
+
+### Comments
+Planning takes about 5-7 seconds for the search object problem and 9-11 seconds for the class uncertainty problem,
+making it slow for real-world application. 
+Few of the planning hyperparameters were tuned according to the complexity of the problem. The most important one is `num_skeletons` which 
+is the number of deterministic plans generated by the symbolic planner. If this was not high enough to cover multiple viable 
+solutions to the goal (abstract belief) state, the planner often solved for a suboptimal policy. The transition models were visualized for each learning iteration to 
+gain insight into how the MDP was learnt. When the goal state is not reachable in the mental simulations
+(insufficient number of plans, ill-defined operators, ill-defined mental simulation), a sub-optimal action is often recommended by the solver. 
+This often results in the planner repeating the action which always fails. When the goal is not reachable, the planner cannot decide which intermediate state is 
+desirable to get to the goal, which results in choosing bad actions. Further, this action is often not applicable in the current belief state. 
+In this case, an action is chosen randomly from the set of applicable actions.
+Due to poorly defined operators or ending up at a “dead end” state, there are often no viable plans to the goal state, resulting in a symbolic planner failure.
+To avoid this, overengineering the preconditions of actions resolved the problem to some extent, but is not the ideal way to proceed. 
+It was observed that a (qualitatively) optimal policy is learnt when the goal state is reachable in the transitions.
+To learn the MDP more accurately, a higher number of samples must be considered for each planning step, especially for problems with a high branching factor.
+The planner can operate in closed-loop fashion, but does not learn the MDP from the environment yet.
+An exaample of a transition model with the goal state being reachable is shown below.
+
+<p align="center">
+  <img width="600" height="400" src="media/transition_good.png">
+</p>
+
+
 
 ## Installation notes
 
