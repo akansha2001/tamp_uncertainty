@@ -1,7 +1,27 @@
-# Uncertainty-aware TAMP
-Short description of the project...
+# Uncertainty and Risk Aware Task and Motion Planning
+While Integrated Task and Motion Planning (TAMP) (Garrett et. al., [2020](https://arxiv.org/pdf/2010.01083)) offers a valuable approach to generalizable long-horizon robotic manipulation and navigation problems, the typical TAMP formulation assumes full observability and deterministic action effects. These assumptions limit the ability of the planner to gather inforamtion and make decisions that are risk-aware. Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) present TAMP with Uncertainty and Risk Awareness (TAMPURA) as an efficient way to solve long-horizon planning problems with initial-state and action outcome uncertainty. TAMPURA uses sequences of controllers for short-time manipulation tasks for long-horizon planning in a deterministic fashion. It extends TAMP with partial observability, uncertainty and a coarse knowledge of the controllers' preconditions and effects. The main algorithm is illustrated below.
+![TAMPURA](/media/TAMPURA_fig3.png)
+Using “templates” that define preconditions and effects for each operator, the symbolic planner solves for multiple all-outcomes determinized plans to the goal abstract belief state. These plans are then evaluated using a mental simulation to approximately learn the transition and reward models for the MDP. The MDP is then solved to obtain a policy which takes belief states as inputs and outputs a suitable controller.
+
 ## Status
-List example files, and what they do. What is the current state of the project? What are the TODOs. Some videos and demonstration of the current state. 
+Two TAMPURA scenarios from Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) have been implemented and simulated on [Isaac Lab](https://isaac-sim.github.io/IsaacLab/main/index.html). The simulations are shown below.
+### Class Uncertainty
+A [robot arm](https://robodk.com/robot/Franka/Emika-Panda) is mounted to a table with 4 objects placed in front of it, with at least one bowl in the scene. The robot must place all objects of a certain class (here, green blocks) in the bowl. Classification noise is added to ground truth labels to mimic the confidence scores typically returned by object
+The agent can gain more certainty about an object category by inspecting the object more closely with a wrist mounted camera (the use of a camera is ommitted in this implementation and the agent gets the class from the environment). A reasonable
+strategy is to closely inspect objects and stably grasp and place them in the bowl. The planner has access to the following controllers:
+Pick(?o ?g ?r), Drop(?o ?g ?r), Inspect(?o),
+for objects o, grasps g, and regions on the table r. 
+This is done in a closed loop fashion, i.e., if the agent believes that the object has fallen from the gripper, it will repeat the Pick action.
+
+*(In this example, the stability of grasps is ommitted. It is implemented in the search object scenario.)*
+
+<video controls width="640">
+  <source src="https://akansha2001.github.io/tamp_uncertainty/media/class_uncertainty1.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
+### Searching for an object in a cluttered environment 
 
 ## Installation notes
 
