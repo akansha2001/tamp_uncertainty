@@ -13,7 +13,7 @@ from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR
 import omni.isaac.lab.sim as sim_utils
 
 from omni.isaac.lab_tasks.manager_based.manipulation.lift import mdp
-from omni.isaac.lab_tasks.manager_based.manipulation.lift.tampura_env_cfg import LiftEnvCfg
+from tampura_env_cfg import LiftEnvCfg
 
 ##
 # Pre-defined configs

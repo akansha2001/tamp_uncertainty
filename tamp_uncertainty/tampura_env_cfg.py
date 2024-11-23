@@ -21,7 +21,7 @@ from omni.isaac.lab.sim.spawners.from_files.from_files_cfg import GroundPlaneCfg
 from omni.isaac.lab.utils import configclass
 from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR
 
-from . import mdp
+from omni.isaac.lab_tasks.manager_based.manipulation.lift import mdp
 
 ##
 # Scene definition

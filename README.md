@@ -9,7 +9,8 @@ While Integrated Task and Motion Planning (TAMP) (Garrett et. al., [2020](https:
 Using “templates” that define preconditions and effects for each operator, the symbolic planner solves for multiple all-outcomes determinized plans to the goal abstract belief state. These plans are then evaluated using a mental simulation to approximately learn the transition and reward models for the MDP. The MDP is then solved to obtain a policy which takes belief states as inputs and outputs a suitable controller.
 
 ## Status
-Two TAMPURA scenarios from Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) have been implemented and simulated on [Isaac Lab](https://isaac-sim.github.io/IsaacLab/main/index.html). The simulations are shown below.
+Two TAMPURA scenarios from Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) have been implemented and simulated on [Isaac Lab](https://isaac-sim.github.io/IsaacLab/main/index.html). Two demonstrations for each scenario are shown below. For both files, `num_samples`, `batch_size` and `num_skeletons` can be changed in the `cfg` dictionary passed to the planner. Increasing `num_samples` would help learn the MDP more closely, and increasing `num_skeletons` will ensure that the symbolic planner explores more deterministic plans to the goal state. Increasing them is recommended for highly complex problems with large branching factors.
+
 ### Class Uncertainty
 A [robot arm](https://robodk.com/robot/Franka/Emika-Panda) is mounted to a table with 4 objects placed in front of it, with at least one bowl in the scene. The robot must place all objects of a certain class (here, green blocks) in the bowl. 
 Classification noise is added to ground truth labels to mimic the confidence scores typically returned by object detection systems.
@@ -19,11 +20,17 @@ Pick(?o ?g ?r), Drop(?o ?g ?r), Inspect(?o),
 for objects o, grasps g, and regions on the table r. 
 This is done in a closed loop fashion, i.e., if the agent believes that the object has fallen from the gripper, it will repeat the Pick action.
 
+This scenario corresponds to the [`class_uncertainty.py`](/tamp_uncertainty/class_uncertainty.py) file with the environment setup files [`class_uncertainty_ik_abs_env_cfg.py`](/tamp_uncertainty/class_uncertainty_ik_abs_env_cfg.py) and [`class_uncertainty_joint_pos_env_cfg.py`](/tamp_uncertainty/class_uncertainty_joint_pos_env_cfg.py).
+
 *(In this example, the stability of grasps is ommitted. It is implemented in the search object scenario.)*
 
-![class_uncertainty1](/media/class_uncertainty1.gif)
+<p align="center">
+  <img width="600" height="300" src="media/class_uncertainty1.gif">
+</p>
 
-![class_uncertainty2](/media/class_uncertainty2.gif)
+<p align="center">
+  <img width="600" height="300" src="media/class_uncertainty2.gif">
+</p>
 
 ### Searching for an object in a cluttered environment 
 In this task, the agent has 4 objects placed in front of it with exactly one die hidden
@@ -36,9 +43,15 @@ Pick(?o, ?g), Place(?o, ?g), Look(?o, ?q) controllers for this task.
 Further, the object grasps have unknown probabilty of success, which may be determined 
 during the mental simulations for learning the MDP.
 
-![search_object1](/media/search_object1.gif)
+This scenario corresponds to the [`search_object.py`](/tamp_uncertainty/search_object.py) file with the environment setup files [`search_object_ik_abs_env_cfg.py`](/tamp_uncertainty/search_object_ik_abs_env_cfg.py) and [`search_object_joint_pos_env_cfg.py`](/tamp_uncertainty/search_object_joint_pos_env_cfg.py).
 
-![search_object2](/media/search_object2.gif)
+<p align="center">
+  <img width="600" height="300" src="media/search_object1.gif">
+</p>
+
+<p align="center">
+  <img width="600" height="300" src="media/search_object2.gif">
+</p>
 
 ### Comments
 Planning takes about 5-7 seconds for the search object problem and 9-11 seconds for the class uncertainty problem,
@@ -100,26 +113,15 @@ More information about dependencies specification can be found [here](https://do
 
 The python files required for the two TAMPURA task scenarios are available in the `tamp_uncertainty` directory. These must be placed in the appropriate location in the local `IsaacLab` directory to run them. The following instructions are for the class uncertainty task and are similar to the search for object in clutter task with the file names changed.
 
-In the terminal, working from the `tamp_uncertainty` directory, set the following environment variables
+In the terminal, working from root of the repository, move the `tamp_uncertainty` directory to the following location in the local installation of `IsaacLab`.
+
 
 ```bash
-SM_PATH=../IsaacLab/source/standalone/environments/state_machine/
-FRANKA_CFG_PATH=../IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config/franka/
-ENV_CFG_PATH=../IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/
-```
-
-Now, copy the files to the suitable locations
-
-```bash
-cp __init__.py ${FRANKA_CFG_PATH}
-cp class_uncertainty_ik_abs_env_cfg ${FRANKA_CFG_PATH}
-cp class_uncertainty_joint_pos_env_cfg ${FRANKA_CFG_PATH}
-cp class_uncertainty.py ${SM_PATH}
-cp tampura_env_cfg.py ${ENV_CFG_PATH}
+cp -r tamp_uncertainty IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config
 ```
 
 The scripts should be ready for execution. To run `class_uncertainty.py`, type in the following in the terminal
 
 ```bash
-python /home/am/tamp_uncertainty/IsaacLab/source/standalone/environments/state_machine/class_uncertainty.py --num_envs 1 
+python /home/am/tamp_uncertainty/IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config/tamp_uncertainty/class_uncertainty.py --num_envs 1
 ```
