@@ -120,8 +120,8 @@ In the terminal, working from root of the repository, move the `tamp_uncertainty
 cp -r tamp_uncertainty IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config
 ```
 
-The scripts should be ready for execution. To run `class_uncertainty.py`, type in the following in the terminal
+The scripts should be ready for execution. To run `class_uncertainty.py`, type in the following in the terminal from the root of the repository
 
 ```bash
-python /home/am/tamp_uncertainty/IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config/tamp_uncertainty/class_uncertainty.py --num_envs 1
+python IsaacLab/source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/manager_based/manipulation/lift/config/tamp_uncertainty/class_uncertainty.py --num_envs 1
 ```
