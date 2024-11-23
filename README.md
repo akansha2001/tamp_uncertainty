@@ -21,8 +21,9 @@ This is done in a closed loop fashion, i.e., if the agent believes that the obje
 
 *(In this example, the stability of grasps is ommitted. It is implemented in the search object scenario.)*
 
-The demonstrations can be found on YouTube: [demo1](https://youtu.be/Pu4PjG98_KI) and [demo2](https://youtu.be/qWSa4KQeKMk).
+![class_uncertainty1](/media/class_uncertainty1.gif)
 
+![class_uncertainty2](/media/class_uncertainty2.gif)
 
 ### Searching for an object in a cluttered environment 
 In this task, the agent has 4 objects placed in front of it with exactly one die hidden
@@ -35,7 +36,9 @@ Pick(?o, ?g), Place(?o, ?g), Look(?o, ?q) controllers for this task.
 Further, the object grasps have unknown probabilty of success, which may be determined 
 during the mental simulations for learning the MDP.
 
-The demonstrations can be found on YouTube: [demo1](https://youtu.be/9mQTKUqqYbY) and [demo2](https://youtu.be/B_AgarWq8mk).
+![search_object1](/media/search_object1.gif)
+
+![search_object2](/media/search_object2.gif)
 
 ### Comments
 Planning takes about 5-7 seconds for the search object problem and 9-11 seconds for the class uncertainty problem,
