@@ -2,7 +2,7 @@
 While Integrated Task and Motion Planning (TAMP) (Garrett et. al., [2020](https://arxiv.org/pdf/2010.01083)) offers a valuable approach to generalizable long-horizon robotic manipulation and navigation problems, the typical TAMP formulation assumes full observability and deterministic action effects. These assumptions limit the ability of the planner to gather inforamtion and make decisions that are risk-aware. Curtis et. al. [2024](https://arxiv.org/pdf/2403.10454) present TAMP with Uncertainty and Risk Awareness (TAMPURA) as an efficient way to solve long-horizon planning problems with initial-state and action outcome uncertainty. TAMPURA uses sequences of controllers for short-time manipulation tasks for long-horizon planning in a deterministic fashion. It extends TAMP with partial observability, uncertainty and a coarse knowledge of the controllers' preconditions and effects. The main algorithm is illustrated below.
 
 <p align="center">
-  <img width="600" height="300" src="media/TAMPURA_fig3.png">
+  <img width="600" src="media/TAMPURA_fig3.png">
 </p>
 
 
@@ -25,11 +25,11 @@ This scenario corresponds to the [`class_uncertainty.py`](/tamp_uncertainty/clas
 *(In this example, the stability of grasps is ommitted. It is implemented in the search object scenario.)*
 
 <p align="center">
-  <img width="600" height="300" src="media/class_uncertainty1.gif">
+  <img width="600" src="media/class_uncertainty1.gif">
 </p>
 
 <p align="center">
-  <img width="600" height="300" src="media/class_uncertainty2.gif">
+  <img width="600" src="media/class_uncertainty2.gif">
 </p>
 
 ### Searching for an object in a cluttered environment 
@@ -46,11 +46,11 @@ during the mental simulations for learning the MDP.
 This scenario corresponds to the [`search_object.py`](/tamp_uncertainty/search_object.py) file with the environment setup files [`search_object_ik_abs_env_cfg.py`](/tamp_uncertainty/search_object_ik_abs_env_cfg.py) and [`search_object_joint_pos_env_cfg.py`](/tamp_uncertainty/search_object_joint_pos_env_cfg.py).
 
 <p align="center">
-  <img width="600" height="300" src="media/search_object1.gif">
+  <img width="600" src="media/search_object1.gif">
 </p>
 
 <p align="center">
-  <img width="600" height="300" src="media/search_object2.gif">
+  <img width="600" src="media/search_object2.gif">
 </p>
 
 ### Comments
@@ -72,7 +72,7 @@ The planner can operate in closed-loop fashion, but does not learn the MDP from 
 An exaample of a transition model with the goal state being reachable is shown below.
 
 <p align="center">
-  <img width="600" height="400" src="media/transition_good.png">
+  <img width="600" src="media/transition_good.png">
 </p>
 
 
