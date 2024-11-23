@@ -1,4 +1,6 @@
+runs/
 IsaacLab/
 tampura/
 .venv
 .mypy_cache
+__pycache__
